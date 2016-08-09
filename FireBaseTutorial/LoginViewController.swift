@@ -46,3 +46,12 @@ class LoginViewController: UIViewController {
     
 }
 
+extension LoginViewController: UITextViewDelegate {
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return false
+    }
+    
+}
+
