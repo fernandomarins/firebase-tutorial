@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginViewController: UIViewController {
     
@@ -19,12 +20,13 @@ class LoginViewController: UIViewController {
         return view
     }()
     
-    let loginRegisterButton: UIButton = {
+    lazy var loginRegisterButton: UIButton = {
         let button = UIButton(type: .System)
         button.backgroundColor = UIColor(r: 80, g: 101, b: 161)
         button.setTitle("Register", forState: .Normal)
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         button.titleLabel?.font = UIFont.boldSystemFontOfSize(16)
+        button.addTarget(self, action: #selector(handleRegister), forControlEvents: .TouchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -32,6 +34,8 @@ class LoginViewController: UIViewController {
     let nameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Name"
+        tf.autocapitalizationType = UITextAutocapitalizationType.None
+        tf.autocorrectionType = UITextAutocorrectionType.No
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
     }()
@@ -46,6 +50,8 @@ class LoginViewController: UIViewController {
     let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Email"
+        tf.autocapitalizationType = UITextAutocapitalizationType.None
+        tf.autocorrectionType = UITextAutocorrectionType.No
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
     }()
@@ -61,6 +67,8 @@ class LoginViewController: UIViewController {
         let tf = UITextField()
         tf.placeholder = "Password"
         tf.secureTextEntry = true
+        tf.autocapitalizationType = UITextAutocapitalizationType.None
+        tf.autocorrectionType = UITextAutocorrectionType.No
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
     }()
@@ -73,6 +81,8 @@ class LoginViewController: UIViewController {
         return imageView
     }()
 
+    // Mark: Lifecycle Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -86,6 +96,44 @@ class LoginViewController: UIViewController {
         setupLoginRegisterButton()
         setupProfileView()
     }
+    
+    // Mark: Register user
+    
+    func handleRegister() {
+        
+        guard let email = emailTextField.text, password = passwordTextField.text, name = nameTextField.text else {
+            print("Form is not valid")
+            return
+        }
+        
+        FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user: FIRUser?, error) in
+            if error != nil {
+                print(error)
+                return
+            }
+            
+            guard let uid = user?.uid else {
+                return
+            }
+            
+            // user created
+            let baseURL = "https://fir-tutorial-df177.firebaseio.com/"
+            let ref = FIRDatabase.database().referenceFromURL(baseURL)
+            let usersRerefence = ref.child("users").child(uid)
+            let values = ["name": name, "email": email]
+            usersRerefence.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                if err != nil {
+                    print(err)
+                    return
+                }
+                
+                print("Saved user succesfully into Firebase db")
+            })
+        })
+        
+    }
+    
+    // Mark: Configuring UI
     
     func setupProfileView() {
         // need x, y, width, height
@@ -113,42 +161,28 @@ class LoginViewController: UIViewController {
         // name text field
         // need x, y, width, height
         
-        nameTextField.leftAnchor.constraintEqualToAnchor(inputsContaiverView.leftAnchor, constant: 12).active = true
-        nameTextField.topAnchor.constraintEqualToAnchor(inputsContaiverView.topAnchor).active = true
-        nameTextField.widthAnchor.constraintEqualToAnchor(inputsContaiverView.widthAnchor).active = true
-        nameTextField.heightAnchor.constraintEqualToAnchor(inputsContaiverView.heightAnchor, multiplier: 1/3).active = true
+        textFieldInputsView(nameTextField, anchor: inputsContaiverView.topAnchor)
         
         // name separator
         // need x, y, width, height
         
-        nameSeparator.leftAnchor.constraintEqualToAnchor(inputsContaiverView.leftAnchor).active = true
-        nameSeparator.topAnchor.constraintEqualToAnchor(nameTextField.bottomAnchor).active = true
-        nameSeparator.widthAnchor.constraintEqualToAnchor(inputsContaiverView.widthAnchor).active = true
-        nameSeparator.heightAnchor.constraintEqualToConstant(1).active = true
+        separatorInputsView(nameSeparator, anchor: nameTextField.bottomAnchor)
         
         // email text field
         // need x, y, width, height
         
-        emailTextField.leftAnchor.constraintEqualToAnchor(inputsContaiverView.leftAnchor, constant: 12).active = true
-        emailTextField.topAnchor.constraintEqualToAnchor(nameTextField.bottomAnchor).active = true
-        emailTextField.widthAnchor.constraintEqualToAnchor(inputsContaiverView.widthAnchor).active = true
-        emailTextField.heightAnchor.constraintEqualToAnchor(inputsContaiverView.heightAnchor, multiplier: 1/3).active = true
+        textFieldInputsView(emailTextField, anchor: nameTextField.bottomAnchor)
         
         // email separator
         // need x, y, width, height
         
-        emailSeparator.leftAnchor.constraintEqualToAnchor(inputsContaiverView.leftAnchor).active = true
-        emailSeparator.topAnchor.constraintEqualToAnchor(emailTextField.bottomAnchor).active = true
-        emailSeparator.widthAnchor.constraintEqualToAnchor(inputsContaiverView.widthAnchor).active = true
-        emailSeparator.heightAnchor.constraintEqualToConstant(1).active = true
+        separatorInputsView(emailSeparator, anchor: emailTextField.bottomAnchor)
         
         // password text field
         // need x, y, width, height
         
-        passwordTextField.leftAnchor.constraintEqualToAnchor(inputsContaiverView.leftAnchor, constant: 12).active = true
-        passwordTextField.topAnchor.constraintEqualToAnchor(emailTextField.bottomAnchor).active = true
-        passwordTextField.widthAnchor.constraintEqualToAnchor(inputsContaiverView.widthAnchor).active = true
-        passwordTextField.heightAnchor.constraintEqualToAnchor(inputsContaiverView.heightAnchor, multiplier: 1/3).active = true
+        textFieldInputsView(passwordTextField, anchor: emailTextField.bottomAnchor)
+
     }
     
     func setupLoginRegisterButton() {
@@ -158,6 +192,22 @@ class LoginViewController: UIViewController {
         loginRegisterButton.topAnchor.constraintEqualToAnchor(inputsContaiverView.bottomAnchor, constant: 12).active = true
         loginRegisterButton.widthAnchor.constraintEqualToAnchor(inputsContaiverView.widthAnchor).active = true
         loginRegisterButton.heightAnchor.constraintEqualToConstant(50).active = true
+    }
+    
+    // Add a text field to inputsView
+    func textFieldInputsView(textField: UITextField, anchor: NSLayoutAnchor) {
+        textField.leftAnchor.constraintEqualToAnchor(inputsContaiverView.leftAnchor, constant: 12).active = true
+        textField.topAnchor.constraintEqualToAnchor(anchor).active = true
+        textField.widthAnchor.constraintEqualToAnchor(inputsContaiverView.widthAnchor).active = true
+        textField.heightAnchor.constraintEqualToAnchor(inputsContaiverView.heightAnchor, multiplier: 1/3).active = true
+    }
+    
+    // Add a separator to inputsView
+    func separatorInputsView(view: UIView, anchor: NSLayoutAnchor) {
+        view.leftAnchor.constraintEqualToAnchor(inputsContaiverView.leftAnchor).active = true
+        view.topAnchor.constraintEqualToAnchor(anchor).active = true
+        view.widthAnchor.constraintEqualToAnchor(inputsContaiverView.widthAnchor).active = true
+        view.heightAnchor.constraintEqualToConstant(1).active = true
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
