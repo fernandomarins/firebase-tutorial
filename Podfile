@@ -6,6 +6,7 @@
 target 'FireBaseTutorial' do
 
 	pod 'Firebase'
+	pod 'Firebase/Auth'
 
 end
 
