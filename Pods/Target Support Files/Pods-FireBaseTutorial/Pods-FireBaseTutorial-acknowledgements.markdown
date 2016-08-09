@@ -13,17 +13,17 @@ Copyright 2016 Google
 
 Copyright 2016 Google
 
+## FirebaseDatabase
+
+Copyright 2016 Google
+
 ## FirebaseInstanceID
 
 Copyright 2016 Google
 
-## GoogleAppUtilities
+## FirebaseStorage
 
-Copyright 2015 Google Inc.
-
-## GoogleAuthUtilities
-
-Copyright 2015 Google Inc.
+Copyright 2016 Google Inc.
 
 ## GoogleInterchangeUtilities
 
@@ -36,10 +36,6 @@ Copyright 2015 Google Inc.
 ## GoogleParsingUtilities
 
 Copyright 2015 Google Inc.
-
-## GoogleSignIn
-
-Copyright 2015 Google Inc. All Rights Reserved.
 
 ## GoogleSymbolUtilities
 
