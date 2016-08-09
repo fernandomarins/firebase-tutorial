@@ -9,14 +9,21 @@
 import UIKit
 import Firebase
 import FirebaseAuth
+import GoogleSignIn
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController,
+    GIDSignInDelegate,
+    GIDSignInUIDelegate {
 
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self
         
     }
     
@@ -42,6 +49,38 @@ class LoginViewController: UIViewController {
             }
             
         })
+    }
+    
+    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!, withError error: NSError!) {
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+        
+        let authentication = user.authentication
+        let crendetial = FIRGoogleAuthProvider.credentialWithIDToken(authentication.idToken, accessToken: authentication.accessToken)
+        
+        FIRAuth.auth()?.signInWithCredential(crendetial, completion: { (user, error) in
+            if error != nil {
+                print(error?.localizedDescription)
+                return
+            }
+            
+            print("User logged in with Google...")
+        })
+    }
+    
+    func signIn(signIn: GIDSignIn!, didDisconnectWithUser user: GIDGoogleUser!, withError error: NSError!) {
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+        
+        do {
+            try FIRAuth.auth()?.signOut()
+        } catch {
+            
+        }
     }
     
 }
