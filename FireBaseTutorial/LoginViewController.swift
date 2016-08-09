@@ -11,6 +11,7 @@ import Firebase
 
 class LoginViewController: UIViewController {
     
+    // Mark: Creating UI Elements
     let inputsContaiverView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.whiteColor()
@@ -88,6 +89,10 @@ class LoginViewController: UIViewController {
         
         view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
         
+        nameTextField.delegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        
         view.addSubview(inputsContaiverView)
         view.addSubview(loginRegisterButton)
         view.addSubview(profileImageView)
@@ -102,13 +107,14 @@ class LoginViewController: UIViewController {
     func handleRegister() {
         
         guard let email = emailTextField.text, password = passwordTextField.text, name = nameTextField.text else {
+            alertWithTitle("Attention!", message: "Please enter all info required.")
             print("Form is not valid")
             return
         }
         
         FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user: FIRUser?, error) in
             if error != nil {
-                print(error)
+                self.alertWithTitle("Attention!", message: (error!.localizedDescription))
                 return
             }
             
@@ -123,11 +129,12 @@ class LoginViewController: UIViewController {
             let values = ["name": name, "email": email]
             usersRerefence.updateChildValues(values, withCompletionBlock: { (err, ref) in
                 if err != nil {
-                    print(err)
+                    self.alertWithTitle("Attention!", message: (err!.localizedDescription))
+                    print(err?.localizedDescription)
                     return
                 }
                 
-                print("Saved user succesfully into Firebase db")
+                self.alertWithTitle("Great!", message: "User was successfully created.")
             })
         })
         
@@ -216,8 +223,12 @@ class LoginViewController: UIViewController {
 
 }
 
-extension UIColor {
-    convenience init(r: CGFloat, g: CGFloat, b: CGFloat) {
-        self.init(red: r/255, green: g/255, blue: b/255, alpha: 1)
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return false
     }
+    
 }
+
