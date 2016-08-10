@@ -112,31 +112,41 @@ class LoginViewController: UIViewController {
             return
         }
         
-        FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user: FIRUser?, error) in
-            if error != nil {
-                self.alertWithTitle("Attention!", message: (error!.localizedDescription))
-                return
-            }
+        FirebaseService.sharedInstace.createUser(email, password: password, name: name, failure: { (errorMessage) in
             
-            guard let uid = user?.uid else {
-                return
-            }
+            self.alertWithTitle("Attention!", message: errorMessage)
             
-            // user created
-            let baseURL = "https://fir-tutorial-df177.firebaseio.com/"
-            let ref = FIRDatabase.database().referenceFromURL(baseURL)
-            let usersRerefence = ref.child("users").child(uid)
-            let values = ["name": name, "email": email]
-            usersRerefence.updateChildValues(values, withCompletionBlock: { (err, ref) in
-                if err != nil {
-                    self.alertWithTitle("Attention!", message: (err!.localizedDescription))
-                    print(err?.localizedDescription)
-                    return
-                }
+            }) {
                 
-                self.alertWithTitle("Great!", message: "User was successfully created.")
-            })
-        })
+                self.alertWithTitle("Great!", message: "User was created!")
+                
+        }
+        
+//        FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user: FIRUser?, error) in
+//            if error != nil {
+//                self.alertWithTitle("Attention!", message: (error!.localizedDescription))
+//                return
+//            }
+//            
+//            guard let uid = user?.uid else {
+//                return
+//            }
+//            
+//            // user created
+//            let baseURL = "https://fir-tutorial-df177.firebaseio.com/"
+//            let ref = FIRDatabase.database().referenceFromURL(baseURL)
+//            let usersRerefence = ref.child("users").child(uid)
+//            let values = ["name": name, "email": email]
+//            usersRerefence.updateChildValues(values, withCompletionBlock: { (err, ref) in
+//                if err != nil {
+//                    self.alertWithTitle("Attention!", message: (err!.localizedDescription))
+//                    print(err?.localizedDescription)
+//                    return
+//                }
+//                
+//                self.alertWithTitle("Great!", message: "User was successfully created.")
+//            })
+//        })
         
     }
     

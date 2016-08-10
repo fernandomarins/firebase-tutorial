@@ -16,6 +16,7 @@
 		554A309B1D5963E000039FD2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 554A309A1D5963E000039FD2 /* GoogleService-Info.plist */; };
 		55665CC11D5978DE00911C3A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55665CC01D5978DE00911C3A /* Extensions.swift */; };
 		55B4AE821D5A59B300AB9A03 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B4AE811D5A59B300AB9A03 /* LoginViewController.swift */; };
+		55B4AE841D5ACEE100AB9A03 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B4AE831D5ACEE100AB9A03 /* FirebaseService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		55665CBF1D5975B900911C3A /* FireBaseTutorial_Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FireBaseTutorial_Bridging-Header.h"; sourceTree = "<group>"; };
 		55665CC01D5978DE00911C3A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		55B4AE811D5A59B300AB9A03 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		55B4AE831D5ACEE100AB9A03 /* FirebaseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		C17A112A4464B1F00D8FBFD0 /* libPods-FireBaseTutorial.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FireBaseTutorial.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D18C91D1687807175D484CB5 /* Pods-FireBaseTutorial.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FireBaseTutorial.release.xcconfig"; path = "Pods/Target Support Files/Pods-FireBaseTutorial/Pods-FireBaseTutorial.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				554A30881D5962E000039FD2 /* AppDelegate.swift */,
+				55B4AE851D5ACEE800AB9A03 /* Model */,
 				55B4AE801D5A599E00AB9A03 /* Controller */,
 				55665CBF1D5975B900911C3A /* FireBaseTutorial_Bridging-Header.h */,
 				554A308C1D5962E000039FD2 /* Main.storyboard */,
@@ -88,6 +91,14 @@
 				55B4AE811D5A59B300AB9A03 /* LoginViewController.swift */,
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		55B4AE851D5ACEE800AB9A03 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				55B4AE831D5ACEE100AB9A03 /* FirebaseService.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		98A995AF99BE8C25C955E793 /* Frameworks */ = {
@@ -231,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55B4AE821D5A59B300AB9A03 /* LoginViewController.swift in Sources */,
+				55B4AE841D5ACEE100AB9A03 /* FirebaseService.swift in Sources */,
 				554A308B1D5962E000039FD2 /* ViewController.swift in Sources */,
 				55665CC11D5978DE00911C3A /* Extensions.swift in Sources */,
 				554A30891D5962E000039FD2 /* AppDelegate.swift in Sources */,
