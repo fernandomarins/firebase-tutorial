@@ -12,8 +12,6 @@ import Firebase
 
 class FirebaseService {
     
-    let baseURL = "https://fir-tutorial-df177.firebaseio.com/"
-    
     func createUser(email: String, password: String, name: String, failure: (errorMessage: String) -> Void, success: () -> Void) {
         FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user: FIRUser?, error) in
             if error != nil {
@@ -26,7 +24,7 @@ class FirebaseService {
             }
             
             // user created
-            let ref = FIRDatabase.database().referenceFromURL(self.baseURL)
+            let ref = FIRDatabase.database().referenceFromURL(Constants().baseURL)
             let usersRerefence = ref.child("users").child(uid)
             let values = ["name": name, "email": email]
             usersRerefence.updateChildValues(values, withCompletionBlock: { (err, ref) in
@@ -40,6 +38,7 @@ class FirebaseService {
         })
     }
     
+    // Singleton
     static let sharedInstace = FirebaseService()
     
 }

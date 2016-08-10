@@ -107,18 +107,24 @@ class LoginViewController: UIViewController {
     func handleRegister() {
         
         guard let email = emailTextField.text, password = passwordTextField.text, name = nameTextField.text else {
-            alertWithTitle("Attention!", message: "Please enter all info required.")
-            print("Form is not valid")
+            performUpdatesOnMain({ 
+                self.alertWithTitle("Attention!", message: "Please enter all info required.")
+            })
+            
             return
         }
         
         FirebaseService.sharedInstace.createUser(email, password: password, name: name, failure: { (errorMessage) in
             
-            self.alertWithTitle("Attention!", message: errorMessage)
+            performUpdatesOnMain({ 
+                self.alertWithTitle("Attention!", message: errorMessage)
+            })
             
             }) {
                 
-                self.alertWithTitle("Great!", message: "User was created!")
+                performUpdatesOnMain({ 
+                    self.alertWithTitle("Great!", message: "User was created!")
+                })
                 
         }
         
