@@ -30,6 +30,7 @@ class MessagesViewController: UITableViewController {
             performSelector(#selector(handleLogout), withObject: nil, afterDelay: 0)
         } else {
             let uid = FIRAuth.auth()?.currentUser?.uid
+            
             FIRDatabase.database().reference().child("users").child(uid!).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 
                 if let dictionary = snapshot.value as? [String: AnyObject] {

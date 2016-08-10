@@ -25,8 +25,6 @@ class NewMessagesViewController: UITableViewController {
     
     func fetchUser() {
         FIRDatabase.database().reference().child("users").observeEventType(.ChildAdded, withBlock: { (snapshot) in
-            print(snapshot)
-            
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let user = User()
                 user.setValuesForKeysWithDictionary(dictionary)

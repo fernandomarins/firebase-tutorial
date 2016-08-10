@@ -52,6 +52,7 @@ class FirebaseService {
         })
     }
     
+    // Sign out user
     func logout(failure: (errorMessage: ErrorType) -> Void) {
         do {
             try FIRAuth.auth()?.signOut()
@@ -59,6 +60,23 @@ class FirebaseService {
             failure(errorMessage: logoutError)
         }
     }
+    
+    // This method is not working
+    // Get user name
+//    func getuserName(uid: String) -> String {
+//        var name = ""
+//        FIRDatabase.database().reference().child("users").child(uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+//            
+//            if let dictionary = snapshot.value as? [String: AnyObject] {
+//                if let safeName = dictionary["name"] as? String {
+//                    name = safeName
+//                }
+//            }
+//            
+//            }, withCancelBlock: nil)
+//        
+//        return name
+//    }
     
     // Singleton
     static let sharedInstace = FirebaseService()
