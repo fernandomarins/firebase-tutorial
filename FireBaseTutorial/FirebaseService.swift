@@ -38,6 +38,18 @@ class FirebaseService {
         })
     }
     
+    func singIn(email: String, password: String, failure: (errorMessage: String) -> Void, success: () -> Void) {
+        FIRAuth.auth()?.signInWithEmail(email, password: password, completion: { (user, error) in
+            if error != nil {
+                failure(errorMessage: error!.localizedDescription)
+                return
+            }
+            
+            success()
+            
+        })
+    }
+    
     // Singleton
     static let sharedInstace = FirebaseService()
     
