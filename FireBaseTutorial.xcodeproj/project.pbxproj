@@ -8,8 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		2263C7CF5421D2AFDF08EDF8 /* libPods-FireBaseTutorial.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C17A112A4464B1F00D8FBFD0 /* libPods-FireBaseTutorial.a */; };
+		551CD3CD1D5B82B6006B4355 /* NewMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551CD3CC1D5B82B6006B4355 /* NewMessagesViewController.swift */; };
+		551CD3CF1D5B856F006B4355 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551CD3CE1D5B856F006B4355 /* User.swift */; };
+		551CD3D21D5B85BD006B4355 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551CD3D11D5B85BD006B4355 /* Users.swift */; };
 		554A30891D5962E000039FD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554A30881D5962E000039FD2 /* AppDelegate.swift */; };
-		554A308B1D5962E000039FD2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554A308A1D5962E000039FD2 /* ViewController.swift */; };
+		554A308B1D5962E000039FD2 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554A308A1D5962E000039FD2 /* MessagesViewController.swift */; };
 		554A308E1D5962E000039FD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 554A308C1D5962E000039FD2 /* Main.storyboard */; };
 		554A30901D5962E000039FD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 554A308F1D5962E000039FD2 /* Assets.xcassets */; };
 		554A30931D5962E000039FD2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 554A30911D5962E000039FD2 /* LaunchScreen.storyboard */; };
@@ -23,9 +26,12 @@
 
 /* Begin PBXFileReference section */
 		0BFD3AC34A455B5C81EEB41F /* Pods-FireBaseTutorial.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FireBaseTutorial.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FireBaseTutorial/Pods-FireBaseTutorial.debug.xcconfig"; sourceTree = "<group>"; };
+		551CD3CC1D5B82B6006B4355 /* NewMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessagesViewController.swift; sourceTree = "<group>"; };
+		551CD3CE1D5B856F006B4355 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		551CD3D11D5B85BD006B4355 /* Users.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		554A30851D5962E000039FD2 /* FireBaseTutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireBaseTutorial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		554A30881D5962E000039FD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		554A308A1D5962E000039FD2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		554A308A1D5962E000039FD2 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		554A308D1D5962E000039FD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		554A308F1D5962E000039FD2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		554A30921D5962E000039FD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -53,6 +59,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		551CD3D01D5B8574006B4355 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				551CD3CE1D5B856F006B4355 /* User.swift */,
+				551CD3D11D5B85BD006B4355 /* Users.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		554A307C1D5962E000039FD2 = {
 			isa = PBXGroup;
 			children = (
@@ -76,7 +91,8 @@
 			children = (
 				554A30881D5962E000039FD2 /* AppDelegate.swift */,
 				55B4AE881D5AD2F000AB9A03 /* GCDBlackBox.swift */,
-				55B4AE851D5ACEE800AB9A03 /* Model */,
+				551CD3D01D5B8574006B4355 /* Model */,
+				55B4AE851D5ACEE800AB9A03 /* Client */,
 				55B4AE801D5A599E00AB9A03 /* Controller */,
 				55665CBF1D5975B900911C3A /* FireBaseTutorial_Bridging-Header.h */,
 				554A308C1D5962E000039FD2 /* Main.storyboard */,
@@ -92,19 +108,20 @@
 		55B4AE801D5A599E00AB9A03 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				554A308A1D5962E000039FD2 /* ViewController.swift */,
+				554A308A1D5962E000039FD2 /* MessagesViewController.swift */,
 				55B4AE811D5A59B300AB9A03 /* LoginViewController.swift */,
+				551CD3CC1D5B82B6006B4355 /* NewMessagesViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
 		};
-		55B4AE851D5ACEE800AB9A03 /* Model */ = {
+		55B4AE851D5ACEE800AB9A03 /* Client */ = {
 			isa = PBXGroup;
 			children = (
 				55B4AE831D5ACEE100AB9A03 /* FirebaseService.swift */,
 				55B4AE861D5AD29700AB9A03 /* Constants.swift */,
 			);
-			name = Model;
+			name = Client;
 			sourceTree = "<group>";
 		};
 		98A995AF99BE8C25C955E793 /* Frameworks */ = {
@@ -249,8 +266,11 @@
 			files = (
 				55B4AE821D5A59B300AB9A03 /* LoginViewController.swift in Sources */,
 				55B4AE841D5ACEE100AB9A03 /* FirebaseService.swift in Sources */,
-				554A308B1D5962E000039FD2 /* ViewController.swift in Sources */,
+				551CD3D21D5B85BD006B4355 /* Users.swift in Sources */,
+				554A308B1D5962E000039FD2 /* MessagesViewController.swift in Sources */,
+				551CD3CD1D5B82B6006B4355 /* NewMessagesViewController.swift in Sources */,
 				55665CC11D5978DE00911C3A /* Extensions.swift in Sources */,
+				551CD3CF1D5B856F006B4355 /* User.swift in Sources */,
 				554A30891D5962E000039FD2 /* AppDelegate.swift in Sources */,
 				55B4AE871D5AD29700AB9A03 /* Constants.swift in Sources */,
 				55B4AE891D5AD2F000AB9A03 /* GCDBlackBox.swift in Sources */,
