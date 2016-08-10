@@ -42,12 +42,22 @@ class MessagesViewController: UITableViewController {
     
     func handleLogout() {
         
-        do {
-            try FIRAuth.auth()?.signOut()
-        } catch let logoutError {
-            print(logoutError)
+        if Reachability.isConnectedToNetwork() {
+            FirebaseService.sharedInstace.logout { (errorMessage) in
+                if let errMessage = errorMessage as? String {
+                    self.alertWithTitle("Attention!", message: errMessage)
+                }
+            }
+            
+            presentLoginView()
+        } else {
+            alertWithTitle("Attention!", message: "Your device is not connected to the internet.")
         }
         
+        
+    }
+    
+    func presentLoginView() {
         let loginViewController = LoginViewController()
         presentViewController(loginViewController, animated: true, completion: nil)
     }

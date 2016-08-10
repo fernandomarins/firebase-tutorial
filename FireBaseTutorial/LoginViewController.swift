@@ -259,7 +259,6 @@ class LoginViewController: UIViewController {
 
         }
         
-        
     }
     
     func handleRegister() {

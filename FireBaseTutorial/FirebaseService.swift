@@ -12,6 +12,7 @@ import Firebase
 
 class FirebaseService {
     
+    // Create user firebase
     func createUser(email: String, password: String, name: String, failure: (errorMessage: String) -> Void, success: () -> Void) {
         FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user: FIRUser?, error) in
             if error != nil {
@@ -38,6 +39,7 @@ class FirebaseService {
         })
     }
     
+    // Sign in user firebase
     func singIn(email: String, password: String, failure: (errorMessage: String) -> Void, success: () -> Void) {
         FIRAuth.auth()?.signInWithEmail(email, password: password, completion: { (user, error) in
             if error != nil {
@@ -48,6 +50,14 @@ class FirebaseService {
             success()
             
         })
+    }
+    
+    func logout(failure: (errorMessage: ErrorType) -> Void) {
+        do {
+            try FIRAuth.auth()?.signOut()
+        } catch let logoutError {
+            failure(errorMessage: logoutError)
+        }
     }
     
     // Singleton
