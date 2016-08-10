@@ -8,10 +8,11 @@
 
 import UIKit
 
-class Users: NSObject {
-    
-    static let sharedInstance = Users()
-    
-    var arrayOfUsers = [User]()
-
-}
+// Unused clas
+//class Users: NSObject {
+//    
+//    static let sharedInstance = Users()
+//    
+//    var arrayOfUsers = [User]()
+//
+//}

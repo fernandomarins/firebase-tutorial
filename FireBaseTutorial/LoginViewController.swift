@@ -74,11 +74,15 @@ class LoginViewController: UIViewController {
         return tf
     }()
     
-    let profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "gameofthrones_splash")
         imageView.contentMode = .ScaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView)))
+        imageView.userInteractionEnabled = true
+            
         return imageView
     }()
     
@@ -240,50 +244,29 @@ class LoginViewController: UIViewController {
     
     func handleLogin() {
         
-        guard let email = emailTextField.text, password = passwordTextField.text else {
-            performUpdatesOnMain({
-                self.alertWithTitle("Attention!", message: "Please enter all info required.")
-            })
+        func handleLogin() {
+            guard let email = emailTextField.text, password = passwordTextField.text else {
+                print("Form is not valid")
+                return
+            }
             
-            return
-        }
-        
-        FirebaseService.sharedInstace.singIn(email, password: password, failure: { (errorMessage) in
-            performUpdatesOnMain({ 
-                self.alertWithTitle("Attention!", message: errorMessage)
-            })
-            
-            }) {
+            FIRAuth.auth()?.signInWithEmail(email, password: password, completion: { (user, error) in
                 
+                if error != nil {
+                    print(error)
+                    return
+                }
+                
+                //successfully logged in our user
                 self.dismissViewControllerAnimated(true, completion: nil)
-
+                
+            })
+            
         }
         
     }
     
-    func handleRegister() {
-        
-        guard let email = emailTextField.text, password = passwordTextField.text, name = nameTextField.text else {
-            performUpdatesOnMain({
-                self.alertWithTitle("Attention!", message: "Please enter all info required.")
-            })
-            
-            return
-        }
-        
-        FirebaseService.sharedInstace.createUser(email, password: password, name: name, failure: { (errorMessage) in
-            
-            performUpdatesOnMain({
-                self.alertWithTitle("Attention!", message: errorMessage)
-            })
-            
-        }) {
-            
-            self.dismissViewControllerAnimated(true, completion: nil)
-            
-        }
-        
-    }
+    
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent

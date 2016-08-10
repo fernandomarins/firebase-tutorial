@@ -12,6 +12,9 @@ import Firebase
 class NewMessagesViewController: UITableViewController {
     
     let cellId = "cellId"
+    
+    // Move this array to a new class
+    var users = [User]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +32,7 @@ class NewMessagesViewController: UITableViewController {
                 let user = User()
                 user.setValuesForKeysWithDictionary(dictionary)
                 
-                Users.sharedInstance.arrayOfUsers.append(user)
+                self.users.append(user)
                 
                 performUpdatesOnMain({ 
                     self.tableView.reloadData()
@@ -45,14 +48,14 @@ class NewMessagesViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Users.sharedInstance.arrayOfUsers.count
+        return users.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath)
         
-        let user = Users.sharedInstance.arrayOfUsers[indexPath.row]
+        let user = users[indexPath.row]
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
         

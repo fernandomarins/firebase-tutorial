@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import Firebase
 
-class FirebaseService {
+/*class FirebaseService {
     
     // Create user firebase
     func createUser(email: String, password: String, name: String, failure: (errorMessage: String) -> Void, success: () -> Void) {
@@ -81,4 +81,4 @@ class FirebaseService {
     // Singleton
     static let sharedInstace = FirebaseService()
     
-}
+}*/
