@@ -9,6 +9,7 @@ target 'FireBaseTutorial' do
 	pod 'Firebase/Database'
 	pod 'Firebase/Auth'
 	pod 'Firebase/Storage'
+	pod 'MBProgressHUD', '~> 0.9.1'
 
 end
 

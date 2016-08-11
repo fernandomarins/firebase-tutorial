@@ -11,6 +11,8 @@ import Firebase
 
 class LoginViewController: UIViewController {
     
+    var messagesVC: MessagesViewController?
+    
     // Mark: Creating UI Elements
     let inputsContainerView: UIView = {
         let view = UIView()
@@ -231,42 +233,6 @@ class LoginViewController: UIViewController {
         passwordTextFieldAnchor?.active = true
         
     }
-    
-    // Mark: Register user
-    
-    func handleLoginRegister() {
-        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
-            handleLogin()
-        } else {
-            handleRegister()
-        }
-    }
-    
-    func handleLogin() {
-        
-        func handleLogin() {
-            guard let email = emailTextField.text, password = passwordTextField.text else {
-                print("Form is not valid")
-                return
-            }
-            
-            FIRAuth.auth()?.signInWithEmail(email, password: password, completion: { (user, error) in
-                
-                if error != nil {
-                    print(error)
-                    return
-                }
-                
-                //successfully logged in our user
-                self.dismissViewControllerAnimated(true, completion: nil)
-                
-            })
-            
-        }
-        
-    }
-    
-    
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent

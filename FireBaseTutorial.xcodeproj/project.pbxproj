@@ -22,6 +22,7 @@
 		55B4AE841D5ACEE100AB9A03 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B4AE831D5ACEE100AB9A03 /* FirebaseService.swift */; };
 		55B4AE871D5AD29700AB9A03 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B4AE861D5AD29700AB9A03 /* Constants.swift */; };
 		55B4AE891D5AD2F000AB9A03 /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B4AE881D5AD2F000AB9A03 /* GCDBlackBox.swift */; };
+		55BDC7171D5BDE6A00B391E1 /* Hud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BDC7161D5BDE6A00B391E1 /* Hud.swift */; };
 		55D157881D5BAE280017405A /* LoginViewController+Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D157871D5BAE280017405A /* LoginViewController+Handlers.swift */; };
 		8F61BD44BFE36BB5DAD27352 /* Pods_FireBaseTutorial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 097FD7492C9002629454BCF7 /* Pods_FireBaseTutorial.framework */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,7 @@
 		55B4AE831D5ACEE100AB9A03 /* FirebaseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		55B4AE861D5AD29700AB9A03 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		55B4AE881D5AD2F000AB9A03 /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
+		55BDC7161D5BDE6A00B391E1 /* Hud.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hud.swift; sourceTree = "<group>"; };
 		55D157871D5BAE280017405A /* LoginViewController+Handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Handlers.swift"; sourceTree = "<group>"; };
 		D18C91D1687807175D484CB5 /* Pods-FireBaseTutorial.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FireBaseTutorial.release.xcconfig"; path = "Pods/Target Support Files/Pods-FireBaseTutorial/Pods-FireBaseTutorial.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,8 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				554A30881D5962E000039FD2 /* AppDelegate.swift */,
-				55B4AE881D5AD2F000AB9A03 /* GCDBlackBox.swift */,
-				551CD3D31D5BA1E5006B4355 /* Reachability.swift */,
+				55B244D71D5BD839001725F2 /* Helpers */,
 				551CD3D01D5B8574006B4355 /* Model */,
 				55B4AE851D5ACEE800AB9A03 /* Client */,
 				55B4AE801D5A599E00AB9A03 /* Controller */,
@@ -103,11 +104,21 @@
 				554A308C1D5962E000039FD2 /* Main.storyboard */,
 				554A308F1D5962E000039FD2 /* Assets.xcassets */,
 				554A30911D5962E000039FD2 /* LaunchScreen.storyboard */,
-				55665CC01D5978DE00911C3A /* Extensions.swift */,
 				554A309A1D5963E000039FD2 /* GoogleService-Info.plist */,
 				554A30941D5962E000039FD2 /* Info.plist */,
 			);
 			path = FireBaseTutorial;
+			sourceTree = "<group>";
+		};
+		55B244D71D5BD839001725F2 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				55B4AE881D5AD2F000AB9A03 /* GCDBlackBox.swift */,
+				551CD3D31D5BA1E5006B4355 /* Reachability.swift */,
+				55665CC01D5978DE00911C3A /* Extensions.swift */,
+				55BDC7161D5BDE6A00B391E1 /* Hud.swift */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		55B4AE801D5A599E00AB9A03 /* Controller */ = {
@@ -276,6 +287,7 @@
 				551CD3D21D5B85BD006B4355 /* Users.swift in Sources */,
 				554A308B1D5962E000039FD2 /* MessagesViewController.swift in Sources */,
 				551CD3CD1D5B82B6006B4355 /* NewMessagesViewController.swift in Sources */,
+				55BDC7171D5BDE6A00B391E1 /* Hud.swift in Sources */,
 				55D157881D5BAE280017405A /* LoginViewController+Handlers.swift in Sources */,
 				55665CC11D5978DE00911C3A /* Extensions.swift in Sources */,
 				551CD3CF1D5B856F006B4355 /* User.swift in Sources */,

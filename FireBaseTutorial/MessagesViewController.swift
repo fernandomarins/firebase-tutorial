@@ -29,16 +29,70 @@ class MessagesViewController: UITableViewController {
         if FIRAuth.auth()?.currentUser?.uid == nil {
             performSelector(#selector(handleLogout), withObject: nil, afterDelay: 0)
         } else {
-            let uid = FIRAuth.auth()?.currentUser?.uid
-            
-            FIRDatabase.database().reference().child("users").child(uid!).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-                
-                if let dictionary = snapshot.value as? [String: AnyObject] {
-                    self.navigationItem.title = dictionary["name"] as? String
-                }
-                
-            }, withCancelBlock: nil)
+            fetchUserAndSetupNavBarTitle()
         }
+    }
+    
+    func fetchUserAndSetupNavBarTitle() {
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
+            return
+        }
+        
+        FIRDatabase.database().reference().child("users").child(uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+//                self.navigationItem.title = dictionary["name"] as? String
+                
+                let user = User()
+                user.setValuesForKeysWithDictionary(dictionary)
+                self.setupNavBarWithUser(user)
+            }
+            
+            }, withCancelBlock: nil)
+    }
+    
+    func setupNavBarWithUser(user: User) {
+        let titleView = UIView()
+        titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
+        
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        titleView.addSubview(containerView)
+        
+        let profileImageView = UIImageView()
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.contentMode = .ScaleAspectFill
+        profileImageView.layer.cornerRadius = 20
+        profileImageView.clipsToBounds = true
+        if let profileImageUrl = user.profileImageUrl {
+            profileImageView.loadImageUsingCacheWithUrlString(profileImageUrl)
+        }
+        
+        containerView.addSubview(profileImageView)
+        
+        //ios 9 constraint anchors
+        //need x,y,width,height anchors
+        profileImageView.leftAnchor.constraintEqualToAnchor(containerView.leftAnchor).active = true
+        profileImageView.centerYAnchor.constraintEqualToAnchor(containerView.centerYAnchor).active = true
+        profileImageView.widthAnchor.constraintEqualToConstant(40).active = true
+        profileImageView.heightAnchor.constraintEqualToConstant(40).active = true
+        
+        let nameLabel = UILabel()
+        
+        // Always add the element after creating it, otherwise app will crash
+        containerView.addSubview(nameLabel)
+        nameLabel.text = user.name
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        //need x,y,width,height anchors
+        nameLabel.leftAnchor.constraintEqualToAnchor(profileImageView.rightAnchor, constant: 8).active = true
+        nameLabel.centerYAnchor.constraintEqualToAnchor(profileImageView.centerYAnchor).active = true
+        nameLabel.rightAnchor.constraintEqualToAnchor(containerView.rightAnchor).active = true
+        nameLabel.heightAnchor.constraintEqualToAnchor(profileImageView.heightAnchor).active = true
+        
+        containerView.centerXAnchor.constraintEqualToAnchor(titleView.centerXAnchor).active = true
+        containerView.centerYAnchor.constraintEqualToAnchor(titleView.centerYAnchor).active = true
+        
+        navigationItem.titleView = titleView
     }
     
     func handleLogout() {
@@ -49,12 +103,13 @@ class MessagesViewController: UITableViewController {
             print(logoutError)
         }
         
-        presentLoginView()        
+        presentLoginView()
         
     }
     
     func presentLoginView() {
         let loginViewController = LoginViewController()
+        loginViewController.messagesVC = self
         presentViewController(loginViewController, animated: true, completion: nil)
     }
     

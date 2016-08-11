@@ -11,16 +11,54 @@ import Firebase
 
 extension LoginViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    func handleLoginRegister() {
+        if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
+            handleLogin()
+        } else {
+            handleRegister()
+        }
+    }
+    
+    func handleLogin() {
+        guard let email = emailTextField.text, password = passwordTextField.text else {
+            print("Form is not valid")
+            return
+        }
+        
+        
+        waitHud("Loggin in...", view: view)
+        FIRAuth.auth()?.signInWithEmail(email, password: password, completion: { (user, error) in
+            
+            if error != nil {
+                self.alertWithTitle("Attention", message: error!.localizedDescription)
+                dismissHud(self.view)
+                return
+            }
+            
+            dismissHud(self.view)
+            
+            self.messagesVC?.fetchUserAndSetupNavBarTitle()
+            
+            //successfully logged in our user
+            self.dismissViewControllerAnimated(true, completion: nil)
+            
+        })
+        
+    }
+
+    
     func handleRegister() {
         guard let email = emailTextField.text, password = passwordTextField.text, name = nameTextField.text else {
             print("Form is not valid")
             return
         }
         
+        waitHud("Creating user...", view: view)
         FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user: FIRUser?, error) in
             
             if error != nil {
-                print(error)
+                self.alertWithTitle("Attention", message: error!.localizedDescription)
+                dismissHud(self.view)
                 return
             }
             
@@ -30,14 +68,15 @@ extension LoginViewController: UIImagePickerControllerDelegate, UINavigationCont
             
             //successfully authenticated user
             let imageName = NSUUID().UUIDString
-            let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).png")
+            let storageRef = FIRStorage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
-            if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
-                
+            if let profileImage = self.profileImageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
+
                 storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                     
                     if error != nil {
-                        print(error)
+                        self.alertWithTitle("Attention", message: error!.localizedDescription)
+                        dismissHud(self.view)
                         return
                     }
                     
@@ -59,10 +98,16 @@ extension LoginViewController: UIImagePickerControllerDelegate, UINavigationCont
         usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
             
             if err != nil {
-                print(err)
+                self.alertWithTitle("Attention", message: err!.localizedDescription)
+                dismissHud(self.view)
                 return
             }
             
+            let user = User()
+            user.setValuesForKeysWithDictionary(values)
+            self.messagesVC?.setupNavBarWithUser(user)
+            
+            dismissHud(self.view)
             self.dismissViewControllerAnimated(true, completion: nil)
         })
     }
@@ -96,7 +141,6 @@ extension LoginViewController: UIImagePickerControllerDelegate, UINavigationCont
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        print("canceled picker")
         dismissViewControllerAnimated(true, completion: nil)
     }
     
