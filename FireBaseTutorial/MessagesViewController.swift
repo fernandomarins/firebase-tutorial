@@ -17,10 +17,49 @@ class MessagesViewController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Compose, target: self, action: #selector(handleNewMessage))
         
         checkIfUserIsLoggedIn()
+        
+        observeMesssages()
+    }
+    
+    var messages = [Messages]()
+    
+    func observeMesssages() {
+        
+        let ref = FIRDatabase.database().reference().child("messages")
+        ref.observeSingleEventOfType(.ChildAdded, withBlock: { (snapshot) in
+            
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                let message = Messages()
+                print(snapshot)
+                message.setValuesForKeysWithDictionary(dictionary)
+                self.messages.append(message)
+                
+                performUpdatesOnMain({ 
+                    self.tableView.reloadData()
+                })
+
+            }
+            
+            }, withCancelBlock: nil)
+        
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "cellId")
+        
+        let message = messages[indexPath.row]
+        cell.textLabel?.text = message.text
+        
+        return cell
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages.count
     }
     
     func handleNewMessage() {
         let newMessageVC = NewMessagesViewController()
+        newMessageVC.messagesVC = self
         let navController = UINavigationController(rootViewController: newMessageVC)
         presentViewController(navController, animated: true, completion: nil)
     }
@@ -41,7 +80,6 @@ class MessagesViewController: UITableViewController {
         FIRDatabase.database().reference().child("users").child(uid).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             
             if let dictionary = snapshot.value as? [String: AnyObject] {
-//                self.navigationItem.title = dictionary["name"] as? String
                 
                 let user = User()
                 user.setValuesForKeysWithDictionary(dictionary)
@@ -93,6 +131,14 @@ class MessagesViewController: UITableViewController {
         containerView.centerYAnchor.constraintEqualToAnchor(titleView.centerYAnchor).active = true
         
         navigationItem.titleView = titleView
+        
+//        titleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showChatController)))
+    }
+    
+    func showChatController(user: User) {
+        let chatVC = ChatLogViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        chatVC.user = user
+        navigationController?.pushViewController(chatVC, animated: true)
     }
     
     func handleLogout() {

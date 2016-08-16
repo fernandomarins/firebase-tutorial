@@ -28,16 +28,21 @@ class NewMessagesViewController: UITableViewController {
     
     func fetchUser() {
         FIRDatabase.database().reference().child("users").observeEventType(.ChildAdded, withBlock: { (snapshot) in
+            
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let user = User()
-                user.setValuesForKeysWithDictionary(dictionary)
+                user.id = snapshot.key
                 
+                //if you use this setter, your app will crash if your class properties don't exactly match up with the firebase dictionary keys
+                user.setValuesForKeysWithDictionary(dictionary)
                 self.users.append(user)
                 
-                performUpdatesOnMain({ 
+                //this will crash because of background thread, so lets use dispatch_async to fix
+                dispatch_async(dispatch_get_main_queue(), {
                     self.tableView.reloadData()
                 })
                 
+                //                user.name = dictionary["name"]
             }
             
             }, withCancelBlock: nil)
@@ -69,6 +74,15 @@ class NewMessagesViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 64
+    }
+    
+    var messagesVC: MessagesViewController?
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        dismissViewControllerAnimated(true) {
+            let user = self.users[indexPath.row]
+            self.messagesVC?.showChatController(user)
+        }
     }
 
 }
